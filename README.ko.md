@@ -4,7 +4,9 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
-<!-- TODO: npm version / CI badges after first release -->
+[![npm version](https://img.shields.io/npm/v/markdown-it-aozora-ruby.svg)](https://www.npmjs.com/package/markdown-it-aozora-ruby)
+[![CI](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/actions/workflows/ci.yml/badge.svg)](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/actions/workflows/ci.yml)
+[![license: MIT](https://img.shields.io/npm/l/markdown-it-aozora-ruby.svg)](./LICENSE)
 
 ## 설치
 
