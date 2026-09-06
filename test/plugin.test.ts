@@ -195,7 +195,7 @@ describe('aozoraRuby plugin — 회귀 테스트', () => {
     );
   });
 
-  it('강조 안의 루비 — **强調《きょうちょう》** → <strong> 안에 <ruby>', () => {
+  it('강조 안의 루비 — **強調《きょうちょう》** → <strong> 안에 <ruby>', () => {
     const result = md.render('**強調《きょうちょう》**');
     expect(result).toBe(
       '<p><strong><ruby>強調<rt>きょうちょう</rt></ruby></strong></p>\n'
@@ -234,11 +234,14 @@ describe('aozoraRuby plugin — Justdown 포팅 케이스', () => {
   });
 
   // Justdown: 'HTML ruby 태그 직접 입력을 그대로 통과시킨다'
-  // Justdown은 html:true 설정 사용 — 이 패키지도 html:true일 때 동일 동작 확인
-  it('html:true 시 raw <ruby> 태그가 그대로 통과한다', () => {
+  // Justdown은 html:true 설정 사용 — raw 부분은 그대로, 아오조라 표기만 변환됨을 확인
+  it('html:true 시 raw <ruby>와 아오조라 표기가 혼합된 경우 각각 올바르게 처리된다', () => {
     const mdHtml = new MarkdownIt({ html: true });
     mdHtml.use(aozoraRuby);
-    const result = mdHtml.render('<ruby>漢字<rt>かんじ</rt></ruby>');
-    expect(result).toBe('<p><ruby>漢字<rt>かんじ</rt></ruby></p>\n');
+    // raw <ruby>는 그대로 통과, 읽書《どくしょ》는 플러그인이 변환
+    const result = mdHtml.render('<ruby>漢字<rt>かんじ</rt></ruby>と読書《どくしょ》');
+    expect(result).toBe(
+      '<p><ruby>漢字<rt>かんじ</rt></ruby>と<ruby>読書<rt>どくしょ</rt></ruby></p>\n'
+    );
   });
 });

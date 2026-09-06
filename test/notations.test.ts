@@ -217,6 +217,9 @@ describe('findAozoraRuby', () => {
     it('개행 포함된 텍스트에서 throw 안 함', () => {
       expect(() => findAozoraRuby('漢字《かんじ\n》')).not.toThrow();
       expect(() => findAozoraRuby('｜テキ\nスト《テキスト》')).not.toThrow();
+      // 개행은 요미/베이스에 허용되지 않으므로 미매치 — \n 배제 불변식
+      expect(findAozoraRuby('漢字《かんじ\n》')).toEqual([]);
+      expect(findAozoraRuby('｜テキ\nスト《テキスト》')).toEqual([]);
     });
 
     it('매치 실패한 다양한 입력에서 빈 배열 반환', () => {
