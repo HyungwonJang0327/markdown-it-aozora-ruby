@@ -1,0 +1,68 @@
+{
+  "name": "markdown-it-aozora-ruby",
+  "version": "0.0.0",
+  "description": "markdown-it plugin for Aozora Bunko-style ruby (furigana) notation: 漢字《かんじ》",
+  "keywords": [
+    "markdown-it",
+    "markdown-it-plugin",
+    "ruby",
+    "furigana",
+    "aozora",
+    "japanese",
+    "青空文庫",
+    "ルビ"
+  ],
+  "license": "MIT",
+  "author": "Hyungwon Jang <hyungwonjang0327@gmail.com>",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "peerDependencies": {
+    "markdown-it": ">=13"
+  },
+  "pnpm": {
+    "overrides": {
+      "human-id": "4.1.1"
+    }
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.31.1",
+    "@types/markdown-it": "^14.2.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "eslint": "^10.10.0",
+    "markdown-it": "^15.0.1",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^5.0.0"
+  }
+}
