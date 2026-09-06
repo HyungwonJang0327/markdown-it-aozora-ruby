@@ -1,0 +1,179 @@
+import { describe, expect, it } from 'vitest';
+import { findAozoraRuby } from '../src/notations.js';
+
+describe('findAozoraRuby', () => {
+  describe('암시 베이스 — 한자 연속 run', () => {
+    it('단순 한자+요미', () => {
+      const result = findAozoraRuby('漢字《かんじ》');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual({
+        index: 0,
+        length: '漢字《かんじ》'.length,
+        base: '漢字',
+        reading: 'かんじ',
+      });
+    });
+
+    it('텍스트 중간에 위치한 매치', () => {
+      const result = findAozoraRuby('今日は漢字《かんじ》を書く');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('漢字');
+      expect(result[0]?.reading).toBe('かんじ');
+      expect(result[0]?.index).toBe('今日は'.length);
+    });
+
+    it('복수 매치', () => {
+      const result = findAozoraRuby('漢字《かんじ》と読書《どくしょ》');
+      expect(result).toHaveLength(2);
+      expect(result[0]?.base).toBe('漢字');
+      expect(result[1]?.base).toBe('読書');
+    });
+  });
+
+  describe('명시 베이스 — 전각 ｜', () => {
+    it('전각 파이프로 한자 명시', () => {
+      const result = findAozoraRuby('｜東京《とうきょう》');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual({
+        index: 0,
+        length: '｜東京《とうきょう》'.length,
+        base: '東京',
+        reading: 'とうきょう',
+      });
+    });
+
+    it('base에 ｜ 자체를 포함하지 않음', () => {
+      const result = findAozoraRuby('｜東京《とうきょう》');
+      expect(result[0]?.base).toBe('東京');
+    });
+
+    it('전각 ｜로 한자 이외 문자 포함 베이스', () => {
+      const result = findAozoraRuby('｜東京都《とうきょうと》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('東京都');
+    });
+  });
+
+  describe('명시 베이스 — 반각 |', () => {
+    it('반각 파이프로 명시', () => {
+      const result = findAozoraRuby('|東京《とうきょう》');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual({
+        index: 0,
+        length: '|東京《とうきょう》'.length,
+        base: '東京',
+        reading: 'とうきょう',
+      });
+    });
+
+    it('반각 | 로 히라가나 포함 베이스', () => {
+      const result = findAozoraRuby('|東京都《とうきょうと》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('東京都');
+    });
+  });
+
+  describe('BMP 밖 한자 (Supplementary CJK)', () => {
+    it('𠮟 단독 — 암시 베이스', () => {
+      const result = findAozoraRuby('𠮟《しか》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('𠮟');
+      expect(result[0]?.reading).toBe('しか');
+    });
+
+    it('𠮟る《しかる》 — る가 비한자이므로 미매치 (암시 베이스 없음)', () => {
+      // 《 직전이 る(비한자)이므로 암시 베이스 없음, 명시 베이스도 없음
+      const result = findAozoraRuby('𠮟る《しかる》');
+      expect(result).toHaveLength(0);
+    });
+
+    it('｜𠮟る《しかる》 — 명시 베이스로 매치', () => {
+      const result = findAozoraRuby('｜𠮟る《しかる》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('𠮟る');
+      expect(result[0]?.reading).toBe('しかる');
+    });
+  });
+
+  describe('특수 문자 — ヶ', () => {
+    it('ヶ를 포함한 한자 run — 암시 베이스', () => {
+      // ヶ는 Script=Katakana이지만 한자 run에 포함
+      const result = findAozoraRuby('一ヶ月《いっかげつ》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('一ヶ月');
+      expect(result[0]?.reading).toBe('いっかげつ');
+    });
+
+    it('々 반복 부호', () => {
+      const result = findAozoraRuby('人々《ひとびと》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('人々');
+      expect(result[0]?.reading).toBe('ひとびと');
+    });
+
+    it('〆 기호', () => {
+      const result = findAozoraRuby('〆切《しめきり》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('〆切');
+    });
+  });
+
+  describe('매치 안 함 케이스', () => {
+    it('빈 요미 《》는 변환 안 함', () => {
+      const result = findAozoraRuby('漢字《》');
+      expect(result).toHaveLength(0);
+    });
+
+    it('｜만 있고 《》 없으면 원문 유지', () => {
+      const result = findAozoraRuby('｜東京');
+      expect(result).toHaveLength(0);
+    });
+
+    it('빈 문자열', () => {
+      const result = findAozoraRuby('');
+      expect(result).toHaveLength(0);
+    });
+
+    it('일반 텍스트', () => {
+      const result = findAozoraRuby('Hello world');
+      expect(result).toHaveLength(0);
+    });
+
+    it('《》만 있고 앞에 한자 없음', () => {
+      const result = findAozoraRuby('abc《かんじ》');
+      expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('RubyMatch index/length 정확성', () => {
+    it('index는 매치 전체의 시작 (｜ 포함)', () => {
+      const text = 'abc｜東京《とうきょう》def';
+      const result = findAozoraRuby(text);
+      expect(result).toHaveLength(1);
+      const m = result[0]!;
+      expect(m.index).toBe('abc'.length);
+      expect(text.slice(m.index, m.index + m.length)).toBe('｜東京《とうきょう》');
+    });
+
+    it('length는 매치 전체 길이', () => {
+      const text = '漢字《かんじ》';
+      const result = findAozoraRuby(text);
+      expect(result[0]?.length).toBe(text.length);
+    });
+
+    it('명시 베이스의 index는 ｜ 포함한 위치', () => {
+      const text = '｜東京《とうきょう》';
+      const result = findAozoraRuby(text);
+      expect(result[0]?.index).toBe(0);
+      expect(result[0]?.length).toBe(text.length);
+    });
+  });
+
+  describe('throw 없음 — 항상 안전하게 반환', () => {
+    it('null/undefined 등 비정상 입력에 throw 안 함', () => {
+      // 빈 문자열과 정상 문자열만 테스트 (타입 강제는 런타임에서 보호)
+      expect(() => findAozoraRuby('')).not.toThrow();
+      expect(() => findAozoraRuby('普通のテキスト')).not.toThrow();
+    });
+  });
+});
