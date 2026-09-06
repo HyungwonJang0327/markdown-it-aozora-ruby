@@ -32,9 +32,9 @@
 - [x] GitHub 저장소 생성·푸시·main 보호 규칙·CI 그린 확인 — 2026-09-07 완료
   - 완료 조건: Actions에서 lint·typecheck·test·build 전부 통과 ✅ (PR #2에서 job `ci` 그린, 23s). main 보호: CI 필수(strict)·force push/삭제 금지. packageManager 필드 추가는 4e95cb6
   - 커밋: (없음 — 저장소 설정 작업)
-- [ ] `pnpm build` 산출물 검증 (`npm pack --dry-run`으로 dist만 포함 확인, ESM/CJS 양쪽 import 스모크)
-  - 완료 조건: Node에서 `require`·`import` 둘 다 동작
-  - 커밋: `build(build): 패키징 검증 보완` (수정 필요 시에만)
+- [x] `pnpm build` 산출물 검증 (`npm pack --dry-run`으로 dist만 포함 확인, ESM/CJS 양쪽 import 스모크) — 2026-09-07
+  - 완료 조건: Node에서 `require`·`import` 둘 다 동작 ✅ (tarball 11파일 = LICENSE·README 3종·dist 6·package.json, 임시 디렉토리에 tarball 설치 후 ESM/CJS 렌더·stripRuby 스모크 통과)
+  - 커밋: (없음 — 수정 불필요)
 - [ ] changeset 작성 → v1.0.0 bump → npm publish (/ship, 사용자 승인 후)
   - 완료 조건: `npm view markdown-it-aozora-ruby version` = 1.0.0
   - 커밋: `release: v1.0.0` (Changesets 자동)
