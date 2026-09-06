@@ -15,8 +15,10 @@ export function findAozoraRuby(text: string): RubyMatch[] {
   const results: RubyMatch[] = [];
   let m: RegExpExecArray | null;
   while ((m = AOZORA_RE.exec(text)) !== null) {
-    const base = m[1] ?? m[2] ?? '';
-    const reading = m[3] ?? '';
+    // 정규식 구조상 ｜그룹(m[1])과 한자연속 그룹(m[2]) 중 정확히 하나가 매치되고,
+    // 요미 그룹(m[3])은 전체 매치 성립 시 항상 존재한다.
+    const base = m[1] !== undefined ? m[1] : m[2]!;
+    const reading = m[3]!;
     results.push({
       index: m.index,
       length: m[0].length,
