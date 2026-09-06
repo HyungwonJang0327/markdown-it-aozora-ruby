@@ -169,5 +169,6 @@ describe('aozoraRuby plugin — render-level tests', () => {
     const result = md.render('`漢字《かんじ》`');
     expect(result).toContain('<code>');
     expect(result).not.toContain('<ruby>');
+    expect(result).toContain('漢字《かんじ》');
   });
 });
