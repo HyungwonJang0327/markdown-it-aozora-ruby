@@ -73,12 +73,16 @@ describe('aozoraRuby plugin — token-level tests', () => {
     expect(children).toHaveLength(13);
     expect(children[0]?.type).toBe('ruby_open');
     expect(children[1]?.content).toBe('漢字');
+    expect(children[2]?.type).toBe('ruby_rt_open');
     expect(children[3]?.content).toBe('かんじ');
+    expect(children[4]?.type).toBe('ruby_rt_close');
     expect(children[6]?.type).toBe('text');
     expect(children[6]?.content).toBe('と');
     expect(children[7]?.type).toBe('ruby_open');
     expect(children[8]?.content).toBe('読書');
     expect(children[10]?.content).toBe('どくしょ');
+    expect(children[11]?.type).toBe('ruby_rt_close');
+    expect(children[12]?.type).toBe('ruby_close');
   });
 
   it('명시 베이스 ｜ベース《よみ》 — base에 ｜ 미포함', () => {
@@ -114,6 +118,7 @@ describe('aozoraRuby plugin — token-level tests', () => {
 
   it('전각 파이프 명시 베이스 — 중간 텍스트 보존', () => {
     const children = getInlineChildren(md, 'abc｜東京《とうきょう》def');
+    expect(children).toHaveLength(8);
     expect(children[0]?.type).toBe('text');
     expect(children[0]?.content).toBe('abc');
     expect(children[1]?.type).toBe('ruby_open');
