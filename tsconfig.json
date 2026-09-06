@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    // tsup dts가 baseUrl을 강제 주입해 TS 6에서 TS5101이 나는 것을 무시 (tsup rollup.js의 `baseUrl || "."`)
+    "ignoreDeprecations": "6.0",
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Bundler",
