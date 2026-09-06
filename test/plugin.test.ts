@@ -238,7 +238,7 @@ describe('aozoraRuby plugin — Justdown 포팅 케이스', () => {
   it('html:true 시 raw <ruby>와 아오조라 표기가 혼합된 경우 각각 올바르게 처리된다', () => {
     const mdHtml = new MarkdownIt({ html: true });
     mdHtml.use(aozoraRuby);
-    // raw <ruby>는 그대로 통과, 읽書《どくしょ》는 플러그인이 변환
+    // raw <ruby>는 그대로 통과, 読書《どくしょ》는 플러그인이 변환
     const result = mdHtml.render('<ruby>漢字<rt>かんじ</rt></ruby>と読書《どくしょ》');
     expect(result).toBe(
       '<p><ruby>漢字<rt>かんじ</rt></ruby>と<ruby>読書<rt>どくしょ</rt></ruby></p>\n'
