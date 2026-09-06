@@ -1,4 +1,4 @@
-# MVP TODO — v1.0.0 (LITE: 전체 범위)
+# MVP TODO — v1.0.0 (LITE: 전체 범위) ✅ 2026-09-07 전체 완료 (v1.0.0 npm 배포됨)
 
 ## Phase 1 — 코어 구현 (TDD, ~1.5일) ✅ 2026-09-07 완료
 
@@ -35,6 +35,6 @@
 - [x] `pnpm build` 산출물 검증 (`npm pack --dry-run`으로 dist만 포함 확인, ESM/CJS 양쪽 import 스모크) — 2026-09-07
   - 완료 조건: Node에서 `require`·`import` 둘 다 동작 ✅ (tarball 11파일 = LICENSE·README 3종·dist 6·package.json, 임시 디렉토리에 tarball 설치 후 ESM/CJS 렌더·stripRuby 스모크 통과)
   - 커밋: (없음 — 수정 불필요)
-- [ ] changeset 작성 → v1.0.0 bump → npm publish (/ship, 사용자 승인 후)
-  - 완료 조건: `npm view markdown-it-aozora-ruby version` = 1.0.0
+- [x] changeset 작성 → v1.0.0 bump → npm publish (/ship, 사용자 승인 후) — 2026-09-07, 24e7ca9
+  - 완료 조건: `npm view markdown-it-aozora-ruby version` = 1.0.0 ✅ (dist-tag latest=1.0.0). 태그 v1.0.0 푸시, 배지 추가(2c14660), 저장소 Website=npm 페이지
   - 커밋: `release: v1.0.0` (Changesets 자동)
