@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-aozora-ruby",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "markdown-it plugin for Aozora Bunko-style ruby (furigana) notation: 漢字《かんじ》",
   "keywords": [
     "markdown-it",

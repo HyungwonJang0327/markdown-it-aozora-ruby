@@ -1,5 +1,11 @@
 # markdown-it-aozora-ruby
 
+## 1.0.1
+
+### Patch Changes
+
+- Docs: use absolute GitHub URLs for README language/license links so they work on the npm package page (relative links 404 there).
+
 ## 1.0.0
 
 ### Major Changes
