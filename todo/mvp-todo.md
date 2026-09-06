@@ -1,23 +1,23 @@
 # MVP TODO — v1.0.0 (LITE: 전체 범위)
 
-## Phase 1 — 코어 구현 (TDD, ~1.5일)
+## Phase 1 — 코어 구현 (TDD, ~1.5일) ✅ 2026-09-07 완료
 
-- [ ] 아오조라 매처 구현 (`notations.ts`)
+- [x] 아오조라 매처 구현 (`notations.ts`) — 2026-09-07, cf3e143 (+테스트 보강 8106d04)
   - 완료 조건: 단위 테스트 통과 — 한자 연속 베이스(`漢字《かんじ》`), `｜`/`|` 명시 베이스, BMP 밖 한자(`𠮟る《しかる》`), 빈 요미(`漢字《》`)는 변환 안 함, `｜`만 있고 `《》` 없으면 원문 유지
   - 커밋: `feat(parser): 아오조라 루비 매처 구현`
-- [ ] core ruler + 플러그인 등록 (`rule.ts`, `index.ts`)
+- [x] core ruler + 플러그인 등록 (`rule.ts`, `index.ts`) — 2026-09-07, ccb9c99 (+테스트 보강 9828877)
   - 완료 조건: text 토큰이 `ruby_open`/text/`ruby_rt_open`/text/`ruby_rt_close`/`ruby_close` 시퀀스로 분해됨을 토큰 레벨 테스트로 검증
   - 커밋: `feat(parser): core ruler 토큰 분해 구현`
-- [ ] 렌더러 룰 (`render.ts`)
+- [x] 렌더러 룰 (`render.ts`) — 2026-09-07, b411908 (+테스트 보강 44732ff)
   - 완료 조건: `md.render()`가 `<ruby>漢字<rt>かんじ</rt></ruby>` 출력. 요미에 `<script>` 포함 시 이스케이프됨(XSS 테스트)
   - 커밋: `feat(render): ruby 토큰 렌더러 구현`
-- [ ] 통합·회귀 테스트
+- [x] 통합·회귀 테스트 — 2026-09-07, 80755f3 (+매처 명시화 1e5e575). 커버리지 100%
   - 완료 조건: 코드 스팬·펜스 안 `《》` 미변환, 링크 텍스트 안 동작, Justdown `markdown.test.ts`의 루비 케이스 전부 포팅·통과, `src/` 커버리지 95%+
   - 커밋: `test(parser): 통합·회귀 테스트 추가`
-- [ ] `stripRuby` 구현 (`strip.ts`)
+- [x] `stripRuby` 구현 (`strip.ts`) — 2026-09-07, 53c2cc2 (+테스트 중복 해소 4e164c6)
   - 완료 조건: `stripRuby('｜東京《とうきょう》') === '東京'` 포함 케이스 통과, named export 확인
   - 커밋: `feat(strip): stripRuby 유틸 구현`
-- [ ] reviewer 리뷰 (/review) 후 승인 항목 수정
+- [x] reviewer 리뷰 (/review) 후 승인 항목 수정 — 2026-09-07, high 0건 달성 (788e4e3 perf 가드, 97e9b76·d19a806 테스트, 013039f 주석)
   - 완료 조건: high 항목 0건
   - 커밋: (지적 사항별 `fix(...)`)
 
