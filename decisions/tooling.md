@@ -9,3 +9,4 @@
 - **갱신 이력**:
   - 2026-09-06: TypeScript를 7.0.2 → **6.0.3**으로 고정. typescript-eslint 8.69가 TS 7(네이티브 컴파일러)을 미지원. typescript-eslint가 TS 7을 지원하면 업그레이드 재검토.
   - 2026-09-06: `@changesets/cli`를 v3 → **v2**로 고정. v3는 Node 22의 `enableCompileCache` API를 요구해 로컬 Node 20.17과 비호환. 또한 v2의 의존성 `human-id@4.2.1`이 ESM 전용이 되어 CJS require를 깨뜨리므로 pnpm override로 `human-id@4.1.1` 고정 (업스트림 수정 시 제거 가능).
+  - 2026-09-07: tsconfig에 `"ignoreDeprecations": "6.0"` 추가 (bb22860). tsup 8.5.1의 dts 롤업이 `baseUrl: compilerOptions.baseUrl || "."`를 강제 주입하는데(rollup.js:6837), TS 6에서 baseUrl deprecation이 에러(TS5101)로 승격돼 DTS 빌드가 실패. 우리 tsconfig에는 baseUrl이 없으므로 순수하게 tsup 주입분을 무시하는 설정. tsup이 baseUrl 주입을 제거하면 되돌릴 것.

@@ -23,14 +23,14 @@
 
 ## Phase 2 — 문서·배포 (~1일)
 
-- [ ] README.md 완성 (Background 채움, 예제 출력이 실제 렌더 결과와 일치)
-  - 완료 조건: README의 모든 코드 예제를 실행해 출력 일치 확인
+- [x] README.md 완성 (Background 채움, 예제 출력이 실제 렌더 결과와 일치) — 2026-09-07, 908d4f6
+  - 완료 조건: README의 모든 코드 예제를 실행해 출력 일치 확인 ✅ (dist 빌드로 8개 예제 실측)
   - 커밋: `docs(docs): README 영어판 완성`
-- [ ] README.ja.md · README.ko.md 작성
-  - 완료 조건: 영어판과 내용 동기, 예제 동일
+- [x] README.ja.md · README.ko.md 작성 — 2026-09-07, 734e1d6
+  - 완료 조건: 영어판과 내용 동기, 예제 동일 ✅ (코드 블록·표기 예제 해시 대조로 3판 동일 확인)
   - 커밋: `docs(docs): 일본어·한국어 README 추가`
-- [ ] GitHub 저장소 생성·푸시·main 보호 규칙·CI 그린 확인
-  - 완료 조건: Actions에서 lint·typecheck·test·build 전부 통과
+- [x] GitHub 저장소 생성·푸시·main 보호 규칙·CI 그린 확인 — 2026-09-07 완료
+  - 완료 조건: Actions에서 lint·typecheck·test·build 전부 통과 ✅ (PR #2에서 job `ci` 그린, 23s). main 보호: CI 필수(strict)·force push/삭제 금지. packageManager 필드 추가는 4e95cb6
   - 커밋: (없음 — 저장소 설정 작업)
 - [ ] `pnpm build` 산출물 검증 (`npm pack --dry-run`으로 dist만 포함 확인, ESM/CJS 양쪽 import 스모크)
   - 완료 조건: Node에서 `require`·`import` 둘 다 동작
