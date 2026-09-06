@@ -2,11 +2,11 @@
 
 > [markdown-it](https://github.com/markdown-it/markdown-it) 用の青空文庫式ルビ（ふりがな）記法プラグイン — `漢字《かんじ》` を <ruby>漢字<rt>かんじ</rt></ruby> としてレンダリングします。
 
-[English](./README.md) | [한국어](./README.ko.md)
+[English](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/blob/main/README.md) | [한국어](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/blob/main/README.ko.md)
 
 [![npm version](https://img.shields.io/npm/v/markdown-it-aozora-ruby.svg)](https://www.npmjs.com/package/markdown-it-aozora-ruby)
 [![CI](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/actions/workflows/ci.yml/badge.svg)](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/actions/workflows/ci.yml)
-[![license: MIT](https://img.shields.io/npm/l/markdown-it-aozora-ruby.svg)](./LICENSE)
+[![license: MIT](https://img.shields.io/npm/l/markdown-it-aozora-ruby.svg)](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/blob/main/LICENSE)
 
 ## インストール
 

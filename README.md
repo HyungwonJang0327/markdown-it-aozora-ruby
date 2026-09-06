@@ -2,11 +2,11 @@
 
 > Aozora Bunko-style ruby (furigana) notation for [markdown-it](https://github.com/markdown-it/markdown-it) — renders `漢字《かんじ》` as <ruby>漢字<rt>かんじ</rt></ruby>.
 
-[日本語](./README.ja.md) | [한국어](./README.ko.md)
+[日本語](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/blob/main/README.ja.md) | [한국어](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/blob/main/README.ko.md)
 
 [![npm version](https://img.shields.io/npm/v/markdown-it-aozora-ruby.svg)](https://www.npmjs.com/package/markdown-it-aozora-ruby)
 [![CI](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/actions/workflows/ci.yml/badge.svg)](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/actions/workflows/ci.yml)
-[![license: MIT](https://img.shields.io/npm/l/markdown-it-aozora-ruby.svg)](./LICENSE)
+[![license: MIT](https://img.shields.io/npm/l/markdown-it-aozora-ruby.svg)](https://github.com/HyungwonJang0327/markdown-it-aozora-ruby/blob/main/LICENSE)
 
 ## Install
 
