@@ -129,3 +129,45 @@ describe('aozoraRuby plugin — token-level tests', () => {
     expect(children[7]?.content).toBe('def');
   });
 });
+
+describe('aozoraRuby plugin — render-level tests', () => {
+  let md: MarkdownItType;
+
+  beforeEach(() => {
+    md = new MarkdownIt();
+    md.use(aozoraRuby);
+  });
+
+  it('単純な漢字+要み — <ruby>タグにレンダリング', () => {
+    const result = md.render('漢字《かんじ》');
+    expect(result).toBe('<p><ruby>漢字<rt>かんじ</rt></ruby></p>\n');
+  });
+
+  it('明示ベース ｜東京《とうきょう》', () => {
+    const result = md.render('｜東京《とうきょう》');
+    expect(result).toBe('<p><ruby>東京<rt>とうきょう</rt></ruby></p>\n');
+  });
+
+  it('前後テキストの保存 — これは漢字《かんじ》です', () => {
+    const result = md.render('これは漢字《かんじ》です');
+    expect(result).toBe('<p>これは<ruby>漢字<rt>かんじ</rt></ruby>です</p>\n');
+  });
+
+  it('XSS対策 — 要みに<script>タグを含む', () => {
+    const result = md.render('漢字《<script>alert(1)</script>》');
+    expect(result).not.toContain('<script>');
+    expect(result).toContain('&lt;script&gt;');
+  });
+
+  it('XSS対策 — ベースに<b>を含む', () => {
+    const result = md.render('｜<b>x</b>《よみ》');
+    expect(result).not.toContain('<b>x</b>');
+    expect(result).toContain('&lt;b&gt;');
+  });
+
+  it('コードスパン内の《》は変換しない', () => {
+    const result = md.render('`漢字《かんじ》`');
+    expect(result).toContain('<code>');
+    expect(result).not.toContain('<ruby>');
+  });
+});
