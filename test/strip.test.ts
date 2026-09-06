@@ -15,7 +15,7 @@ describe('stripRuby — 요미 제거 유틸', () => {
   });
 
   it('복수 매치', () => {
-    expect(stripRuby('面接《めんせつ》の準備《じゅんび》')).toBe('面接の準備');
+    expect(stripRuby('漢字《かんじ》と｜仮名《かな》')).toBe('漢字と仮名');
   });
 
   it('매치 없음 — 일반 텍스트', () => {
