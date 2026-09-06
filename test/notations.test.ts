@@ -47,7 +47,14 @@ describe('findAozoraRuby', () => {
       expect(result[0]?.base).toBe('東京');
     });
 
-    it('전각 ｜로 한자 이외 문자 포함 베이스', () => {
+    it('전각 ｜로 비한자 포함 베이스 — 히라가나 포함', () => {
+      const result = findAozoraRuby('｜お茶《おちゃ》');
+      expect(result).toHaveLength(1);
+      expect(result[0]?.base).toBe('お茶');
+      expect(result[0]?.reading).toBe('おちゃ');
+    });
+
+    it('전각 ｜로 한자 포함 베이스', () => {
       const result = findAozoraRuby('｜東京都《とうきょうと》');
       expect(result).toHaveLength(1);
       expect(result[0]?.base).toBe('東京都');
@@ -79,6 +86,22 @@ describe('findAozoraRuby', () => {
       expect(result).toHaveLength(1);
       expect(result[0]?.base).toBe('𠮟');
       expect(result[0]?.reading).toBe('しか');
+    });
+
+    it('𠮟《しか》る — 후행 텍스트 있을 때 index/length 정확성', () => {
+      // 𠮟는 surrogate pair (U+20B9F) 이므로 .length = 2
+      const text = '𠮟《しか》る';
+      const result = findAozoraRuby(text);
+      expect(result).toHaveLength(1);
+      const m = result[0]!;
+      expect(m.base).toBe('𠮟');
+      expect(m.reading).toBe('しか');
+      // index는 0 (매치 시작이 text의 처음)
+      expect(m.index).toBe(0);
+      // length는 매치 전체 (𠮟 2 chars + 《 1 + しか 2 + 》 1 = 6)
+      expect(m.length).toBe('𠮟《しか》'.length);
+      // text에서 슬라이스해서 매치 부분 확인
+      expect(text.slice(m.index, m.index + m.length)).toBe('𠮟《しか》');
     });
 
     it('𠮟る《しかる》 — る가 비한자이므로 미매치 (암시 베이스 없음)', () => {
@@ -170,10 +193,36 @@ describe('findAozoraRuby', () => {
   });
 
   describe('throw 없음 — 항상 안전하게 반환', () => {
-    it('null/undefined 등 비정상 입력에 throw 안 함', () => {
-      // 빈 문자열과 정상 문자열만 테스트 (타입 강제는 런타임에서 보호)
+    it('빈 문자열에서 throw 안 함', () => {
       expect(() => findAozoraRuby('')).not.toThrow();
+    });
+
+    it('정상 텍스트에서 throw 안 함', () => {
       expect(() => findAozoraRuby('普通のテキスト')).not.toThrow();
+    });
+
+    it('짝 안 맞는 《만 있는 경우 throw 안 함', () => {
+      expect(() => findAozoraRuby('テキスト《かんじ')).not.toThrow();
+      expect(() => findAozoraRuby('漢字《しか')).not.toThrow();
+    });
+
+    it('짝 안 맞는 》만 있는 경우 throw 안 함', () => {
+      expect(() => findAozoraRuby('テキスト》かんじ')).not.toThrow();
+    });
+
+    it('｜ 단독 (《》 없음) 에서 throw 안 함', () => {
+      expect(() => findAozoraRuby('｜テキスト')).not.toThrow();
+    });
+
+    it('개행 포함된 텍스트에서 throw 안 함', () => {
+      expect(() => findAozoraRuby('漢字《かんじ\n》')).not.toThrow();
+      expect(() => findAozoraRuby('｜テキ\nスト《テキスト》')).not.toThrow();
+    });
+
+    it('매치 실패한 다양한 입력에서 빈 배열 반환', () => {
+      expect(findAozoraRuby('《かんじ')).toEqual([]);
+      expect(findAozoraRuby('》かんじ')).toEqual([]);
+      expect(findAozoraRuby('｜')).toEqual([]);
     });
   });
 });
