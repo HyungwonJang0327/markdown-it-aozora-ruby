@@ -10,6 +10,7 @@ export function aozoraRubyRule(state: StateCore): void {
     const newChildren: Token[] = [];
     let changed = false;
 
+    // core 단계에서 text 토큰은 inline.children의 flat 리스트로만 존재한다(재귀 불필요).
     for (const child of token.children) {
       if (child.type !== 'text') {
         newChildren.push(child);
