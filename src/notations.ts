@@ -11,6 +11,8 @@ export interface RubyMatch {
 const AOZORA_RE = /(?:[｜|]([^《》｜|\n]+)|([\p{Script=Han}々〆ヶ]+))《([^《》\n]+)》/gu;
 
 export function findAozoraRuby(text: string): RubyMatch[] {
+  // 《 없으면 정규식이 전체 텍스트를 O(n²)로 스캔하는 것을 방지 (닫히지 않는 베이스 run)
+  if (!text.includes('《')) return [];
   AOZORA_RE.lastIndex = 0;
   const results: RubyMatch[] = [];
   let m: RegExpExecArray | null;

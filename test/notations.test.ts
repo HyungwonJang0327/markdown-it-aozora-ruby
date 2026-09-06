@@ -225,4 +225,16 @@ describe('findAozoraRuby', () => {
       expect(findAozoraRuby('｜')).toEqual([]);
     });
   });
+
+  describe('성능 — 조기 반환 가드', () => {
+    it('《 없는 한자 5만 자 입력이 1초 이내에 빈 배열 반환', () => {
+      // 가드 전에는 닫히지 않는 베이스 run을 정규식이 O(n²)로 스캔해 4초+ 소요
+      const text = '漢'.repeat(50_000);
+      const start = performance.now();
+      const result = findAozoraRuby(text);
+      const elapsed = performance.now() - start;
+      expect(result).toEqual([]);
+      expect(elapsed).toBeLessThan(1000);
+    });
+  });
 });
