@@ -172,3 +172,73 @@ describe('aozoraRuby plugin — render-level tests', () => {
     expect(result).toContain('漢字《かんじ》');
   });
 });
+
+describe('aozoraRuby plugin — 회귀 테스트', () => {
+  let md: MarkdownItType;
+
+  beforeEach(() => {
+    md = new MarkdownIt();
+    md.use(aozoraRuby);
+  });
+
+  it('펜스 코드 블록 안의 《》는 변환하지 않는다', () => {
+    const result = md.render('```\n漢字《かんじ》\n```');
+    expect(result).toContain('漢字《かんじ》');
+    expect(result).not.toContain('<ruby>');
+    expect(result).toContain('<pre><code>');
+  });
+
+  it('링크 텍스트 안의 루비가 <a> 안에 렌더링된다', () => {
+    const result = md.render('[漢字《かんじ》](https://example.com)');
+    expect(result).toBe(
+      '<p><a href="https://example.com"><ruby>漢字<rt>かんじ</rt></ruby></a></p>\n'
+    );
+  });
+
+  it('강조 안의 루비 — **强調《きょうちょう》** → <strong> 안에 <ruby>', () => {
+    const result = md.render('**強調《きょうちょう》**');
+    expect(result).toBe(
+      '<p><strong><ruby>強調<rt>きょうちょう</rt></ruby></strong></p>\n'
+    );
+  });
+});
+
+describe('aozoraRuby plugin — Justdown 포팅 케이스', () => {
+  let md: MarkdownItType;
+
+  beforeEach(() => {
+    md = new MarkdownIt();
+    md.use(aozoraRuby);
+  });
+
+  // Justdown: '반각 | 도 베이스 경계로 동작한다'
+  it('반각 | 베이스 경계 — |お茶《おちゃ》', () => {
+    const result = md.render('|お茶《おちゃ》');
+    expect(result).toBe('<p><ruby>お茶<rt>おちゃ</rt></ruby></p>\n');
+  });
+
+  // Justdown: '인용부호 「」『』는 변환되지 않고 그대로 남는다'
+  it('인용부호 「」『』는 그대로 유지된다', () => {
+    const result = md.render('「面接《めんせつ》」と『本』');
+    expect(result).toBe(
+      '<p>「<ruby>面接<rt>めんせつ</rt></ruby>」と『本』</p>\n'
+    );
+  });
+
+  // Justdown: '한 문장에 여러 후리가나를 모두 변환한다'
+  it('한 문장에 여러 루비를 모두 변환한다', () => {
+    const result = md.render('面接《めんせつ》の準備《じゅんび》');
+    expect(result).toBe(
+      '<p><ruby>面接<rt>めんせつ</rt></ruby>の<ruby>準備<rt>じゅんび</rt></ruby></p>\n'
+    );
+  });
+
+  // Justdown: 'HTML ruby 태그 직접 입력을 그대로 통과시킨다'
+  // Justdown은 html:true 설정 사용 — 이 패키지도 html:true일 때 동일 동작 확인
+  it('html:true 시 raw <ruby> 태그가 그대로 통과한다', () => {
+    const mdHtml = new MarkdownIt({ html: true });
+    mdHtml.use(aozoraRuby);
+    const result = mdHtml.render('<ruby>漢字<rt>かんじ</rt></ruby>');
+    expect(result).toBe('<p><ruby>漢字<rt>かんじ</rt></ruby></p>\n');
+  });
+});
